@@ -1,0 +1,61 @@
+root: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+    tsconfigRootDir: './'
+    project:
+        - './tsconfig.lint.json'
+plugins:
+    - '@typescript-eslint'
+    - 'import'
+extends:
+    - eslint:recommended
+    - plugin:@typescript-eslint/eslint-recommended
+    - plugin:@typescript-eslint/recommended
+    - plugin:@typescript-eslint/recommended-requiring-type-checking
+    - prettier/@typescript-eslint
+    - plugin:prettier/recommended
+    - plugin:import/errors
+    - plugin:import/warnings
+    - plugin:import/typescript
+rules:
+    '@typescript-eslint/explicit-member-accessibility':
+        - error
+    '@typescript-eslint/explicit-module-boundary-types':
+        - error
+    '@typescript-eslint/member-ordering':
+        - error
+    '@typescript-eslint/no-floating-promises':
+        - error
+    '@typescript-eslint/prefer-readonly':
+        - error
+    '@typescript-eslint/no-magic-numbers':
+        - error
+        - ignoreEnums: true
+          ignoreReadonlyClassProperties: true
+          ignore: [0, 1, 100]
+    complexity:
+        - error
+        - max: 6
+    eqeqeq:
+        - error
+    id-length:
+        - error
+        - exceptions: ['e']
+    import/order:
+        - error
+        - alphabetize:
+            order: asc
+    no-await-in-loop:
+        - error
+    no-console:
+        - error
+    no-shadow:
+        - error
+    no-unused-expressions:
+        - error
+    no-use-before-define:
+        - error
+    no-useless-constructor:
+        - error
+    spaced-comment:
+        - error

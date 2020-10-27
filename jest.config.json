@@ -1,0 +1,24 @@
+{
+  "roots": [
+    "<rootDir>/tst"
+  ],
+  "testMatch": [
+    "**/?(*.)+(spec|test).+(ts|tsx|js)"
+  ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  },
+  "collectCoverage": true,
+  "coveragePathIgnorePatterns": [
+    "/node_modules/",
+    "/tst/"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 0,
+      "lines": 0,
+      "statements": 0
+    }
+  },
+  "verbose": true
+}
