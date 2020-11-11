@@ -5,7 +5,8 @@
     "declaration": false,
     "outDir": "./lib",
     "strict": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "tst"]

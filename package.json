@@ -31,6 +31,9 @@
     "url": "https://github.com/jordanryanmoore/homebridge-alexa-player/issues"
   },
   "homepage": "https://github.com/jordanryanmoore/homebridge-alexa-player#readme",
+  "engines": {
+    "homebridge": "^1.0.0"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",

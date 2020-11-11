@@ -1,8 +1,8 @@
 import type { API, PluginInitializer } from 'homebridge';
+import { AlexaPlatformPlugin } from './alexaPlatformPlugin';
 
 const init: PluginInitializer = (api: API): void => {
-    // eslint-disable-next-line no-console
-    console.debug(`Plugin loaded with Homebridge v${api.serverVersion}.`);
+    api.registerPlatform(AlexaPlatformPlugin.PLATFORM_NAME, AlexaPlatformPlugin);
 };
 
 export default init;
