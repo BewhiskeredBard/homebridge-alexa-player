@@ -26,6 +26,8 @@ rules:
         - error
     '@typescript-eslint/no-floating-promises':
         - error
+    '@typescript-eslint/no-shadow':
+        - error
     '@typescript-eslint/prefer-readonly':
         - error
     '@typescript-eslint/no-magic-numbers':
@@ -50,7 +52,7 @@ rules:
     no-console:
         - error
     no-shadow:
-        - error
+        - off
     no-unused-expressions:
         - error
     no-use-before-define:

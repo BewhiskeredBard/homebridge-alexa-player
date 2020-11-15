@@ -3,6 +3,42 @@ declare module 'alexa-remote2' {
 
     type Callback<T> = (error: unknown, data: T) => void;
 
+    export const enum CommandValue {
+        PUSH_VOLUME_COMMAND = 'PUSH_VOLUME_COMMAND',
+        PUSH_AUDIO_PLAYER_STATE = 'PUSH_AUDIO_PLAYER_STATE',
+    }
+
+    export type CommandEvent = {
+        command: string;
+        payload: Record<string, unknown>;
+    };
+
+    export type DopplerId = {
+        deviceSerialNumber: string;
+        deviceType: string;
+    };
+
+    export type DopplerCommandEvent = CommandEvent & {
+        payload: {
+            dopplerId: DopplerId;
+        };
+    };
+
+    export type PushVolumeChangeCommandEvent = DopplerCommandEvent & {
+        command: CommandValue.PUSH_VOLUME_COMMAND;
+        payload: {
+            isMuted: boolean | null;
+            volumeSetting: number | null;
+        };
+    };
+
+    export type PushAudioPlayerStateCommandEvent = DopplerCommandEvent & {
+        command: CommandValue.PUSH_AUDIO_PLAYER_STATE;
+        payload: {
+            audioPlayerState: string;
+        };
+    };
+
     type Command = {
         command: string;
         value?: unknown;
@@ -298,7 +334,7 @@ declare module 'alexa-remote2' {
 
         public deleteDevice(serialOrName: SerialOrName, callback: Callback<unknown>): void;
 
-        public on(event: 'command', listener: (command: { command: string; payload: unknown }) => void): this;
+        public on(event: 'command', listener: (command: CommandEvent) => void): this;
     }
 
     export default AlexaRemote;
