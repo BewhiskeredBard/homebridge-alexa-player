@@ -31,16 +31,14 @@ The following configuration options are optional and change the default behavior
 
 ### Example
 
-Update the `"platforms"` section of your homebrdige `config.json`:
+Update the `"platforms"` section of your homebridge `config.json`:
 
 ```json
 {
   "platforms": [
     {
       "platform": "AlexaPlayer",
-      "auth": {
-        "cookie": "…"
-      }
+      "auth": {}
     }
   ]
 }
