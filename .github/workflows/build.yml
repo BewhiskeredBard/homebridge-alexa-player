@@ -28,7 +28,7 @@ jobs:
     - name: Get Package Name/Version
       run: |
         NPM_PACKAGE=`cat package.json | jq -r '"\(.name)-\(.version)"'`
-        echo "::set-env name=NPM_PACKAGE::$NPM_PACKAGE"
+        echo "NPM_PACKAGE=$NPM_PACKAGE" >> $GITHUB_ENV
     - name: Upload
       uses: actions/upload-artifact@v1
       with:
