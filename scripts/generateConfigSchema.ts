@@ -35,9 +35,9 @@ const schema = {
                 {
                     key: 'auth.proxy.clientHost',
                     title: 'Proxy Client Host',
-                    placeholder: 'e.g., homebridge.local, 192.168.1.123, localhost',
+                    placeholder: 'e.g., 192.168.1.234, homebridge.local, localhost',
                     description:
-                        'A current hostname or IP address of the homebridge host that is accessible from the web browser where you will authenticate from.',
+                        'A current IP address or hostname of the Homebridge host that is accessible from the web browser where you will authenticate from.',
                 },
                 {
                     key: 'auth.proxy.port',
@@ -49,7 +49,7 @@ const schema = {
                     key: 'auth.cookie',
                     title: 'Cookie',
                     description:
-                        'A valid Amazon authentication cookie. If you do not provide this value, you will need to login using a URL that combines the Proxy Client Host and Proxy Port (e.g., http://homebridge.local:2345/) every time homebridge starts. The cookie is logged to the homebridge debug logs after a successful login using the proxy.',
+                        'A valid Amazon authentication cookie. If you do not provide this value, you will need to login using a URL that combines the Proxy Client Host and Proxy Port (e.g., http://192.168.1.234:5678/) every time Homebridge starts. The cookie is logged to the Homebridge debug logs after a successful login using the proxy.',
                 },
             ],
         },
