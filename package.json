@@ -39,7 +39,6 @@
     "@types/node": "^14.14.7",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
-    "alexa-remote2": "^3.3.1",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
@@ -51,5 +50,8 @@
     "ts-jest": "^26.4.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "alexa-remote2": "^3.3.1"
   }
 }
