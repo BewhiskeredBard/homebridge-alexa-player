@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src", "tst"],
+    "include": ["scripts", "src", "tst"],
     "exclude": ["node_modules"]
   }
   

@@ -105,3 +105,5 @@ dist
 
 # Compiled source director
 lib/
+
+config.schema.json

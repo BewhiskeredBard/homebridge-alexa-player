@@ -5,14 +5,16 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "config.schema.json"
   ],
   "scripts": {
     "test": "jest --forceExit",
     "lint": "eslint . --ext .ts",
     "precompile": "rm -rf lib/*",
     "compile": "tsc",
-    "prepare": "run-s lint compile test"
+    "generateConfigSchema": "ts-node ./scripts/generateConfigSchema.ts",
+    "prepare": "run-s lint compile generateConfigSchema test"
   },
   "repository": {
     "type": "git",
@@ -49,9 +51,11 @@
     "prettier": "^2.1.2",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.0.5",
+    "typescript-json-schema": "^0.43.0"
   },
   "dependencies": {
+    "ajv": "^6.12.6",
     "alexa-remote2": "^3.3.1"
   }
 }
