@@ -1,31 +1,15 @@
-import {
-    default as AlexaRemote,
-    Device,
-    Media,
-    CommandEvent,
-    DopplerCommandEvent,
-    PushVolumeChangeCommandEvent,
-    PushAudioPlayerStateCommandEvent,
-    CommandValue,
-} from 'alexa-remote2';
-import type { PlatformAccessory, Logging, Characteristic, CharacteristicValue, CharacteristicSetCallback, Service, HAP, WithUUID } from 'homebridge';
+import { Device, Media, CommandEvent, PushVolumeChangeCommandEvent, PushAudioPlayerStateCommandEvent, CommandValue } from 'alexa-remote2';
+import type { PlatformAccessory, Logging, Service, HAP, WithUUID } from 'homebridge';
+import { AlexaBridge } from './alexaBridge';
 
 export interface ServiceInitializer {
     initialize(accessory: PlatformAccessory, device: Device, media: Media): void;
 }
 
 export abstract class BaseServiceInitializer implements ServiceInitializer {
-    private readonly accessories = new Map<string, PlatformAccessory>();
-
-    public constructor(protected readonly logger: Logging, protected readonly hap: HAP, protected readonly alexaRemote: AlexaRemote) {}
+    public constructor(protected readonly logger: Logging, protected readonly hap: HAP, protected readonly alexaBridge: AlexaBridge) {}
 
     public initialize(accessory: PlatformAccessory, device: Device, media: Media): void {
-        this.init(this.getService(accessory), device, media);
-        this.accessories.set(device.serialNumber, accessory);
-        this.alexaRemote.on('command', command => this.onCommand(command));
-    }
-
-    protected getService(accessory: PlatformAccessory): Service {
         const serviceType = this.getServiceType();
         let service = accessory.getService(serviceType);
 
@@ -33,56 +17,11 @@ export abstract class BaseServiceInitializer implements ServiceInitializer {
             service = accessory.addService(serviceType);
         }
 
-        return service;
-    }
-
-    protected onSet(
-        service: Service,
-        device: Device,
-        characteristic: WithUUID<new () => Characteristic>,
-        getCommand: ((value: CharacteristicValue) => string) | string,
-        getCommandValue?: ((value: CharacteristicValue) => unknown) | string | number | Record<string, unknown> | undefined,
-    ): void {
-        service
-            .getCharacteristic(characteristic)
-            .on(this.hap.CharacteristicEventTypes.SET, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-                try {
-                    const command = 'function' === typeof getCommand ? getCommand(value) : getCommand;
-                    const commandValue = 'function' === typeof getCommandValue ? getCommandValue(value) : getCommandValue;
-
-                    this.alexaRemote.sendCommand(device.serialNumber, command, commandValue, e => {
-                        if (e) {
-                            const message = `Failed to send ${command} to set ${characteristic.name} to ${JSON.stringify(commandValue)}.`;
-                            this.logger.error(message, e);
-                            return callback(new Error(message));
-                        }
-
-                        return callback(undefined);
-                    });
-                } catch (e) {
-                    this.logger.error(`Uncaught error on setting ${characteristic.name}: ${JSON.stringify(e)}`);
-                    callback(e);
-                }
-            });
-    }
-
-    private onCommand(command: CommandEvent): void {
-        if (this.isDopplerCommand(command)) {
-            const accessory = this.accessories.get(command.payload.dopplerId.deviceSerialNumber);
-
-            if (accessory) {
-                this.onServiceCommand(this.getService(accessory), command);
-            }
-        }
-    }
-
-    private isDopplerCommand(command: CommandEvent): command is DopplerCommandEvent {
-        return 'dopplerId' in command.payload;
+        this.init(service, device, media);
     }
 
     protected abstract getServiceType(): WithUUID<typeof Service>;
     protected abstract init(service: Service, device: Device, media: Media): void;
-    protected abstract onServiceCommand<T extends CommandEvent>(service: Service, command: T): void;
 }
 
 export class SmartSpeakerServiceInitializer extends BaseServiceInitializer {
@@ -101,7 +40,7 @@ export class SmartSpeakerServiceInitializer extends BaseServiceInitializer {
         const Volume = HapCharacteristic.Volume;
         const Mute = HapCharacteristic.Mute;
 
-        this.onSet(service, device, TargetMediaState, value => {
+        this.alexaBridge.onCharacteristicSet(device, service, TargetMediaState, value => {
             switch (value) {
                 case TargetMediaState.PAUSE:
                 case TargetMediaState.STOP:
@@ -112,26 +51,26 @@ export class SmartSpeakerServiceInitializer extends BaseServiceInitializer {
             throw new Error(`Unexpected value: ${JSON.stringify(value)}`);
         });
 
-        this.onSet(service, device, Volume, 'volume', value => value);
+        this.alexaBridge.onCharacteristicSet(device, service, Volume, 'volume', value => value);
 
-        this.onSet(service, device, Mute, 'mute', value => {
+        this.alexaBridge.onCharacteristicSet(device, service, Mute, 'mute', value => {
             return { mute: value };
         });
-    }
 
-    protected onServiceCommand<T extends CommandEvent>(service: Service, command: T): void {
-        if (this.isVolumeChange(command)) {
-            if (null !== command.payload.volumeSetting) {
-                this.setVolume(service, command.payload.volumeSetting);
-            }
+        this.alexaBridge.onDeviceCommand(device, command => {
+            if (this.isVolumeChange(command)) {
+                if (null !== command.payload.volumeSetting) {
+                    this.setVolume(service, command.payload.volumeSetting);
+                }
 
-            if (null !== command.payload.isMuted) {
-                this.setMute(service, command.payload.isMuted);
+                if (null !== command.payload.isMuted) {
+                    this.setMute(service, command.payload.isMuted);
+                }
+            } else if (this.isAudioPlayerState(command)) {
+                this.setCurrentMediaState(service, command.payload.audioPlayerState);
+                this.setTargetMediaState(service, command.payload.audioPlayerState);
             }
-        } else if (this.isAudioPlayerState(command)) {
-            this.setCurrentMediaState(service, command.payload.audioPlayerState);
-            this.setTargetMediaState(service, command.payload.audioPlayerState);
-        }
+        });
     }
 
     private setVolume(service: Service, volume: number) {
@@ -209,9 +148,7 @@ export class AccessoryInfoServiceInitializer extends BaseServiceInitializer {
         firmwareRevision.setValue(device.softwareVersion);
         name.setValue(device.accountName);
         serialNumber.setValue(device.serialNumber);
-    }
 
-    protected onServiceCommand<T extends CommandEvent>(service: Service, command: T): void {
         // TODO: Handle device name changes and software updates.
     }
 }

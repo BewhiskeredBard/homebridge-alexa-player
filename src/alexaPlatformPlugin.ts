@@ -3,6 +3,7 @@ import Ajv from 'ajv';
 import AlexaRemote from 'alexa-remote2';
 import type { IndependentPlatformPlugin, Logging, PlatformConfig, API } from 'homebridge';
 import { AccessoryFactory } from './accessoryFactory';
+import { AlexaBridge } from './alexaBridge';
 import { AlexaPlatformConfig } from './alexaPlatformConfig';
 import { DeviceCapabilitiesPredicate, DeviceFamilyPredicate } from './devicePredicate';
 import { AccessoryInfoServiceInitializer, SmartSpeakerServiceInitializer } from './serviceInitializer';
@@ -36,18 +37,19 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
 
         try {
             if (this.validateConfig(this.getSchema(), config)) {
-                const alexa = new AlexaRemote();
+                const alexaRemote = new AlexaRemote();
+                const alexaBridge = new AlexaBridge(logger, api.hap, alexaRemote);
                 const deviceFilters = [
                     new DeviceFamilyPredicate(logger, ...AlexaPlatformPlugin.ALLOWED_DEVICE_FAMILIES),
                     new DeviceCapabilitiesPredicate(logger, ...AlexaPlatformPlugin.REQUIRED_DEVICE_CAPABILTIES),
                 ];
                 const serviceInitializers = [
-                    new AccessoryInfoServiceInitializer(logger, api.hap, alexa),
-                    new SmartSpeakerServiceInitializer(logger, api.hap, alexa),
+                    new AccessoryInfoServiceInitializer(logger, api.hap, alexaBridge),
+                    new SmartSpeakerServiceInitializer(logger, api.hap, alexaBridge),
                 ];
-                const accessoryFactory = new AccessoryFactory(api, alexa, deviceFilters, serviceInitializers);
+                const accessoryFactory = new AccessoryFactory(api, alexaRemote, deviceFilters, serviceInitializers);
 
-                alexa.init(
+                alexaRemote.init(
                     {
                         useWsMqtt: true,
                         logger: (message: string) => logger.debug(message),
