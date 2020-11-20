@@ -23,7 +23,7 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
     // - AUDIO_CONTROLS (echo, Sonos Beam)
     // - AUDIO_PLAYER (echo, Sonos)
     // - DS_VOLUME_SETTING (echo)
-    public static readonly REQUIRED_DEVICE_CAPABILTIES = ['VOLUME_SETTING', 'AUDIO_CONTROLS'];
+    public static readonly REQUIRED_DEVICE_CAPABILTIES = ['DS_VOLUME_SETTING', 'AUDIO_PLAYER'];
 
     private static readonly PROXY_SERVICE_HOST_DEFAULT = 'amazon.com';
     private static readonly PROXY_LANGUAGE = 'en_US';
