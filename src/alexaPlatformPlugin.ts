@@ -5,8 +5,24 @@ import type { IndependentPlatformPlugin, Logging, PlatformConfig, API } from 'ho
 import { AccessoryFactory } from './accessoryFactory';
 import { AlexaBridge } from './alexaBridge';
 import { AlexaPlatformConfig } from './alexaPlatformConfig';
+import {
+    CurrentMediaStateInitializer,
+    FirmwareRevisionInitializer,
+    ManufacturerInitializer,
+    ModelInitializer,
+    MuteInitializer,
+    NameInitializer,
+    SerialNumberInitializer,
+    TargetMediaStateInitializer,
+    VolumeInitializer,
+} from './characteristicInitializer';
 import { DeviceCapabilitiesPredicate, DeviceFamilyPredicate } from './devicePredicate';
-import { AccessoryInfoServiceInitializer, SmartSpeakerServiceInitializer } from './serviceInitializer';
+import {
+    AccessoryInfoServiceInitializer,
+    SmartSpeakerServiceInitializer,
+    TelevisionServiceInitializer,
+    TelevisionSpeakerServiceInitializer,
+} from './serviceInitializer';
 
 export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
     // Example device families:
@@ -44,10 +60,23 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
                     new DeviceCapabilitiesPredicate(logger, ...AlexaPlatformPlugin.REQUIRED_DEVICE_CAPABILTIES),
                 ];
                 const serviceInitializers = [
-                    new AccessoryInfoServiceInitializer(logger, api.hap, alexaBridge),
-                    new SmartSpeakerServiceInitializer(logger, api.hap, alexaBridge),
+                    new AccessoryInfoServiceInitializer(),
+                    new SmartSpeakerServiceInitializer(),
+                    new TelevisionServiceInitializer(),
+                    new TelevisionSpeakerServiceInitializer(),
                 ];
-                const accessoryFactory = new AccessoryFactory(api, alexaRemote, deviceFilters, serviceInitializers);
+                const characteristicInitializers = [
+                    new CurrentMediaStateInitializer(logger, api.hap, alexaBridge),
+                    new TargetMediaStateInitializer(logger, api.hap, alexaBridge),
+                    new MuteInitializer(logger, api.hap, alexaBridge),
+                    new VolumeInitializer(logger, api.hap, alexaBridge),
+                    new ManufacturerInitializer(logger, api.hap, alexaBridge),
+                    new ModelInitializer(logger, api.hap, alexaBridge),
+                    new FirmwareRevisionInitializer(logger, api.hap, alexaBridge),
+                    new NameInitializer(logger, api.hap, alexaBridge),
+                    new SerialNumberInitializer(logger, api.hap, alexaBridge),
+                ];
+                const accessoryFactory = new AccessoryFactory(api, alexaRemote, deviceFilters, serviceInitializers, characteristicInitializers);
 
                 alexaRemote.init(
                     {
