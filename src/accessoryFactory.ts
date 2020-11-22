@@ -1,5 +1,5 @@
 import { default as AlexaRemote, Device, Media } from 'alexa-remote2';
-import type { API, PlatformAccessory, Service, WithUUID } from 'homebridge';
+import type { API, Logging, PlatformAccessory, Service, WithUUID } from 'homebridge';
 import { CharacteristicInitializer } from './characteristicInitializer';
 import { DevicePredicate } from './devicePredicate';
 import { ServiceInitializer } from './serviceInitializer';
@@ -8,6 +8,7 @@ export class AccessoryFactory {
     private static readonly TV_DEVICE_FAMILES = new Set(['KNIGHT']);
 
     public constructor(
+        private readonly logger: Logging,
         private readonly homebridge: API,
         private readonly alexa: AlexaRemote,
         private readonly devicePredicates: DevicePredicate[],
@@ -74,6 +75,8 @@ export class AccessoryFactory {
         const category = AccessoryFactory.TV_DEVICE_FAMILES.has(device.deviceFamily)
             ? this.homebridge.hap.Categories.TELEVISION
             : this.homebridge.hap.Categories.SPEAKER;
+
+        this.logger.debug(`Creating accessory for device: ${JSON.stringify(device)}`);
 
         return new this.homebridge.platformAccessory(name, uuid, category);
     }

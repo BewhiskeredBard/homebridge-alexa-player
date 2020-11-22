@@ -76,12 +76,11 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
                     new NameInitializer(logger, api.hap, alexaBridge),
                     new SerialNumberInitializer(logger, api.hap, alexaBridge),
                 ];
-                const accessoryFactory = new AccessoryFactory(api, alexaRemote, deviceFilters, serviceInitializers, characteristicInitializers);
+                const accessoryFactory = new AccessoryFactory(logger, api, alexaRemote, deviceFilters, serviceInitializers, characteristicInitializers);
 
                 alexaRemote.init(
                     {
                         useWsMqtt: true,
-                        logger: (message: string) => logger.debug(message),
                         cookie: config.auth?.cookie,
                         proxyOwnIp: config.auth.proxy.clientHost,
                         proxyPort: config.auth.proxy.port,
@@ -95,6 +94,12 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
                         if (error) {
                             logger.error('Failed to initialize.', error);
                             return;
+                        }
+
+                        if (!config.auth.cookie && alexaRemote.cookie) {
+                            logger.warn(
+                                `Alexa cookie retrieved successfully. Save this value in the Homebridge AlexaPlayer configuration as auth.cookie, but never share it with anyone: ${alexaRemote.cookie}`,
+                            );
                         }
 
                         accessoryFactory

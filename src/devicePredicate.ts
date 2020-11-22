@@ -17,7 +17,7 @@ export class DeviceFamilyPredicate implements DevicePredicate {
             return true;
         }
 
-        this.logger.debug(`Filtering device (${device.serialNumber}) for device family: ${device.deviceFamily}`);
+        this.logger.debug(`Filtering device for device family (${device.deviceFamily}): ${JSON.stringify(device)}`);
 
         return false;
     }
@@ -39,7 +39,7 @@ export class DeviceCapabilitiesPredicate implements DevicePredicate {
             return true;
         }
 
-        this.logger.debug(`Filtering device (${device.serialNumber}) for missing device capabilities: ${[...missingDeviceCapabilties].join(', ')}`);
+        this.logger.debug(`Filtering device for missing device capabilities (${[...missingDeviceCapabilties].join(', ')}): ${JSON.stringify(device)}`);
 
         return false;
     }
