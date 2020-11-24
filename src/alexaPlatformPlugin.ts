@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { version as NODE_VERSION } from 'process';
 import Ajv from 'ajv';
 import AlexaRemote from 'alexa-remote2';
 import type { IndependentPlatformPlugin, Logging, PlatformConfig, API } from 'homebridge';
@@ -47,9 +48,9 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
     private static readonly SERVICE_LANGUAGE = 'en-US';
 
     public constructor(logger: Logging, config: PlatformConfig, api: API) {
-        const pluginVersion = (JSON.parse(fs.readFileSync(require.resolve('../package.json'), 'utf8')) as Record<string, unknown>).version as string;
+        const npmPackage = JSON.parse(fs.readFileSync(require.resolve('../package.json'), 'utf8')) as Record<string, unknown>;
 
-        logger.info(`Running ${config.platform}-${pluginVersion} on homebridge-${api.serverVersion}.`);
+        logger.info(`Running ${npmPackage.name as string}-v${npmPackage.version as string} with homebridge-v${api.serverVersion} on node-${NODE_VERSION}.`);
 
         try {
             if (this.validateConfig(this.getSchema(), config)) {
