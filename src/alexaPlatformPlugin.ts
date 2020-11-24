@@ -32,7 +32,7 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
     // - MSHOP (mobile shopping app)
     // - THIRD_PARTY_AVS_MEDIA_DISPLAY (Sonos)
     // - THIRD_PARTY_AVS_SONOS_BOOTLEG (Sonos)
-    public static readonly ALLOWED_DEVICE_FAMILIES = ['ECHO'];
+    public static readonly ALLOWED_DEVICE_FAMILIES = ['ECHO', 'KNIGHT'];
 
     // Speaker-relevant device capabilities:
     // - VOLUME_SETTING (mShop, fire tablet, echo, Sonos)
