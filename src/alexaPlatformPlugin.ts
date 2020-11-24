@@ -60,10 +60,10 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
                     new DeviceCapabilitiesPredicate(logger, ...AlexaPlatformPlugin.REQUIRED_DEVICE_CAPABILTIES),
                 ];
                 const serviceInitializers = [
-                    new AccessoryInfoServiceInitializer(),
-                    new SmartSpeakerServiceInitializer(),
-                    new TelevisionServiceInitializer(),
-                    new TelevisionSpeakerServiceInitializer(),
+                    new AccessoryInfoServiceInitializer(api.hap, config),
+                    new SmartSpeakerServiceInitializer(api.hap, config),
+                    new TelevisionServiceInitializer(api.hap, config),
+                    new TelevisionSpeakerServiceInitializer(api.hap, config),
                 ];
                 const characteristicInitializers = [
                     new CurrentMediaStateInitializer(logger, api.hap, alexaBridge),

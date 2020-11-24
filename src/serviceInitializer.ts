@@ -1,55 +1,72 @@
 import { Device } from 'alexa-remote2';
 import type { Characteristic, Service, HAP, WithUUID } from 'homebridge';
+import { AlexaPlatformConfig } from './alexaPlatformConfig';
 
 export interface ServiceInitializer {
-    getServiceType(hap: HAP, device: Device): WithUUID<typeof Service> | undefined;
-    getCharacteristics(hap: HAP, device: Device): WithUUID<new () => Characteristic>[];
+    getServiceType(device: Device): WithUUID<typeof Service> | undefined;
+    getCharacteristics(device: Device): WithUUID<new () => Characteristic>[];
 }
 
-export class SmartSpeakerServiceInitializer implements ServiceInitializer {
-    public getServiceType(hap: HAP, device: Device): WithUUID<typeof Service> | undefined {
-        return 'KNIGHT' !== device.deviceFamily ? hap.Service.SmartSpeaker : undefined;
+export abstract class BaseServiceInitializer implements ServiceInitializer {
+    public constructor(protected readonly hap: HAP, protected readonly config: AlexaPlatformConfig) {}
+
+    protected isTelevision(device: Device): boolean {
+        return this.config.screensAsTelevisions === true && 'KNIGHT' === device.deviceFamily;
     }
 
-    public getCharacteristics(hap: HAP): WithUUID<new () => Characteristic>[] {
-        return [hap.Characteristic.CurrentMediaState, hap.Characteristic.TargetMediaState, hap.Characteristic.Volume, hap.Characteristic.Mute];
-    }
+    public abstract getServiceType(device: Device): WithUUID<typeof Service> | undefined;
+    public abstract getCharacteristics(device: Device): WithUUID<new () => Characteristic>[];
 }
 
-export class TelevisionServiceInitializer implements ServiceInitializer {
-    public getServiceType(hap: HAP, device: Device): WithUUID<typeof Service> | undefined {
-        return 'KNIGHT' === device.deviceFamily ? hap.Service.Television : undefined;
+export class SmartSpeakerServiceInitializer extends BaseServiceInitializer {
+    public getServiceType(device: Device): WithUUID<typeof Service> | undefined {
+        return this.isTelevision(device) ? undefined : this.hap.Service.SmartSpeaker;
     }
 
-    public getCharacteristics(hap: HAP): WithUUID<new () => Characteristic>[] {
-        return [hap.Characteristic.CurrentMediaState, hap.Characteristic.TargetMediaState];
-    }
-}
-
-export class TelevisionSpeakerServiceInitializer implements ServiceInitializer {
-    public getServiceType(hap: HAP, device: Device): WithUUID<typeof Service> | undefined {
-        return 'KNIGHT' === device.deviceFamily ? hap.Service.TelevisionSpeaker : undefined;
-    }
-
-    public getCharacteristics(hap: HAP): WithUUID<new () => Characteristic>[] {
-        return [hap.Characteristic.Mute, hap.Characteristic.Volume];
+    public getCharacteristics(): WithUUID<new () => Characteristic>[] {
+        return [
+            this.hap.Characteristic.CurrentMediaState,
+            this.hap.Characteristic.TargetMediaState,
+            this.hap.Characteristic.Volume,
+            this.hap.Characteristic.Mute,
+        ];
     }
 }
 
-export class AccessoryInfoServiceInitializer implements ServiceInitializer {
-    public getServiceType(hap: HAP): WithUUID<typeof Service> {
-        return hap.Service.AccessoryInformation;
+export class TelevisionServiceInitializer extends BaseServiceInitializer {
+    public getServiceType(device: Device): WithUUID<typeof Service> | undefined {
+        return this.isTelevision(device) ? this.hap.Service.Television : undefined;
     }
 
-    public getCharacteristics(hap: HAP): WithUUID<new () => Characteristic>[] {
+    public getCharacteristics(): WithUUID<new () => Characteristic>[] {
+        return [this.hap.Characteristic.CurrentMediaState, this.hap.Characteristic.TargetMediaState];
+    }
+}
+
+export class TelevisionSpeakerServiceInitializer extends BaseServiceInitializer {
+    public getServiceType(device: Device): WithUUID<typeof Service> | undefined {
+        return this.isTelevision(device) ? this.hap.Service.TelevisionSpeaker : undefined;
+    }
+
+    public getCharacteristics(): WithUUID<new () => Characteristic>[] {
+        return [this.hap.Characteristic.Mute, this.hap.Characteristic.Volume];
+    }
+}
+
+export class AccessoryInfoServiceInitializer extends BaseServiceInitializer {
+    public getServiceType(): WithUUID<typeof Service> {
+        return this.hap.Service.AccessoryInformation;
+    }
+
+    public getCharacteristics(): WithUUID<new () => Characteristic>[] {
         return [
             // TODO: hap.Characteristic.Identify
-            hap.Characteristic.Manufacturer,
-            hap.Characteristic.Model,
-            hap.Characteristic.Name,
-            hap.Characteristic.Model,
-            hap.Characteristic.SerialNumber,
-            hap.Characteristic.FirmwareRevision,
+            this.hap.Characteristic.Manufacturer,
+            this.hap.Characteristic.Model,
+            this.hap.Characteristic.Name,
+            this.hap.Characteristic.Model,
+            this.hap.Characteristic.SerialNumber,
+            this.hap.Characteristic.FirmwareRevision,
         ];
     }
 }

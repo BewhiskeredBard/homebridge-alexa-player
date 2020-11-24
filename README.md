@@ -37,6 +37,8 @@ The following configuration options are optional and change the default behavior
 
   * **`"cookie"`:** A valid Amazon authentication cookie. If you do not provide this value, you will need to login using a URL that combines the Proxy Client Host and Proxy Port (e.g., http://192.168.1.234:5678/) every time Homebridge starts. The cookie is logged to the Homebridge debug logs after a successful login using the proxy.
 
+* **`"screensAsTelevisions"`:** Represent Echo Show (KNIGHT) family devices as television accessories instead of as smart speaker accessories (the default).
+
 ### Example
 
 Update the `"platforms"` section of your Homebridge `config.json`:
@@ -51,7 +53,8 @@ Update the `"platforms"` section of your Homebridge `config.json`:
           "clientHost": "192.168.1.234",
           "port": 5678
         }
-      }
+      },
+      "screensAsTelevisions": true
     }
   ]
 }

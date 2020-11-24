@@ -11,4 +11,5 @@ export interface AlexaPlatformConfig extends PlatformConfig {
             port: number;
         };
     };
+    screensAsTelevisions?: boolean;
 }

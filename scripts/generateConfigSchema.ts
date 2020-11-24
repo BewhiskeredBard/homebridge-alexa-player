@@ -53,6 +53,11 @@ const schema = {
                 },
             ],
         },
+        {
+            key: 'screensAsTelevisions',
+            title: 'Screens as Televisions',
+            description: 'Represent Echo Show (KNIGHT) family devices as television accessories instead of as smart speaker accessories (the default).',
+        },
     ],
 };
 

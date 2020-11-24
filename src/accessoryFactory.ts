@@ -29,11 +29,11 @@ export class AccessoryFactory {
         const accessory = this.newAccessory(device);
 
         this.serviceInitializers.forEach(serviceInitializer => {
-            const serviceType = serviceInitializer.getServiceType(this.homebridge.hap, device);
+            const serviceType = serviceInitializer.getServiceType(device);
 
             if (serviceType) {
                 const service = this.getService(accessory, serviceType);
-                const characteristics = new Set(serviceInitializer.getCharacteristics(this.homebridge.hap, device).map(char => char.UUID));
+                const characteristics = new Set(serviceInitializer.getCharacteristics(device).map(char => char.UUID));
 
                 this.characteristicInitializers
                     .filter(characteristicInitializer => characteristics.has(characteristicInitializer.getCharacteristic().UUID))
