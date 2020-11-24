@@ -3,6 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "declaration": false,
+    "sourceMap": true,
     "outDir": "./lib",
     "strict": true,
     "allowSyntheticDefaultImports": true,
