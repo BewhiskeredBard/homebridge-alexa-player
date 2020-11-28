@@ -33,6 +33,16 @@
     "url": "https://github.com/jordanryanmoore/homebridge-alexa-player/issues"
   },
   "homepage": "https://github.com/jordanryanmoore/homebridge-alexa-player#readme",
+  "funding": [
+    {
+      "type" : "github",
+      "url" : "https://github.com/sponsors/jordanryanmoore"
+    },
+    {
+      "type" : "paypal",
+      "url" : "https://paypal.me/jordanryanmoore"
+    }
+  ],
   "engines": {
     "homebridge": "^1.0.0"
   },
