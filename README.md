@@ -5,7 +5,7 @@ A Homebridge plugin that enables basic smart speaker HomeKit integration for Ale
 
 This plug-in is in the *very* early stages of development. Please be aware of the following caveats:
 
-* It is highly likely that the configuration schema will undergo breakeing changes beforee a 1.0 release.
+* It is highly likely that the configuration schema will undergo breaking changes before a 1.0 release.
 * The authentication configuration/process is less than optimal and will be improved before a 1.0 release.
 * In the Home app, you can only operate play/pause with the accessory controls. Volume can only be controlled via scenes or automations in the Home app. This is due to shortcomings of the Home app, not the plug-in. Alternatives, such as using a brightness control for volume, may be added in the future.
 * Nothing seems to work in the Home+ app. This is still being investigated.
