@@ -33,6 +33,12 @@ const schema = {
             title: 'Authentication',
             items: [
                 {
+                    key: 'auth.region',
+                    title: 'Region',
+                    placeholder: 'e.g., amazon.com, amazon.co.uk, amazon.es',
+                    description: 'A valid Amazon region.',
+                },
+                {
                     key: 'auth.proxy.clientHost',
                     title: 'Proxy Client Host',
                     placeholder: 'e.g., 192.168.1.234, homebridge.local, localhost',

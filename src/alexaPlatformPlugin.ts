@@ -86,8 +86,8 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
                         proxyOwnIp: config.auth.proxy.clientHost,
                         proxyPort: config.auth.proxy.port,
                         // TODO: Move the remaining entries to config…
-                        alexaServiceHost: AlexaPlatformPlugin.SERVICE_HOST_DEFAULT,
-                        amazonPage: AlexaPlatformPlugin.PROXY_SERVICE_HOST_DEFAULT,
+                        alexaServiceHost: config.auth?.region ? 'alexa.' + config.auth.region : AlexaPlatformPlugin.SERVICE_HOST_DEFAULT,
+                        amazonPage: config.auth?.region ? config.auth.region : AlexaPlatformPlugin.PROXY_SERVICE_HOST_DEFAULT,
                         amazonPageProxyLanguage: AlexaPlatformPlugin.PROXY_LANGUAGE,
                         acceptLanguage: AlexaPlatformPlugin.SERVICE_LANGUAGE,
                     },
