@@ -21,6 +21,8 @@ All of the following configuration options are required. If any are missing or i
 
 * **`"platform"`:** Must be `"AlexaPlayer"`.
 
+* **`"amazonDomain"`:** The Amazon domain that your devices are registered to (e.g., `"amazon.com"`, `"amazon.co.uk"`).
+
 * **`"auth"`:**
 
   * **`"proxy"`**:

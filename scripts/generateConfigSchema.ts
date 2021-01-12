@@ -28,6 +28,11 @@ const schema = {
     schema: generator.getSchemaForSymbol(configSymbol.name),
     layout: [
         {
+            key: 'amazonDomain',
+            title: 'Amazon Domain',
+            description: 'The Amazon domain that your devices are registered to.',
+        },
+        {
             type: 'fieldset',
             expandable: false,
             title: 'Authentication',

@@ -42,9 +42,7 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
     // - DS_VOLUME_SETTING (echo)
     public static readonly REQUIRED_DEVICE_CAPABILTIES = ['DS_VOLUME_SETTING', 'AUDIO_PLAYER'];
 
-    private static readonly PROXY_SERVICE_HOST_DEFAULT = 'amazon.com';
     private static readonly PROXY_LANGUAGE = 'en_US';
-    private static readonly SERVICE_HOST_DEFAULT = 'pitangui.amazon.com';
     private static readonly SERVICE_LANGUAGE = 'en-US';
 
     public constructor(logger: Logging, config: PlatformConfig, api: API) {
@@ -82,12 +80,12 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
                 alexaRemote.init(
                     {
                         useWsMqtt: true,
+                        amazonPage: config.amazonDomain,
+                        alexaServiceHost: `alexa.${config.amazonDomain}`,
                         cookie: config.auth?.cookie,
                         proxyOwnIp: config.auth.proxy.clientHost,
                         proxyPort: config.auth.proxy.port,
                         // TODO: Move the remaining entries to config…
-                        alexaServiceHost: AlexaPlatformPlugin.SERVICE_HOST_DEFAULT,
-                        amazonPage: AlexaPlatformPlugin.PROXY_SERVICE_HOST_DEFAULT,
                         amazonPageProxyLanguage: AlexaPlatformPlugin.PROXY_LANGUAGE,
                         acceptLanguage: AlexaPlatformPlugin.SERVICE_LANGUAGE,
                     },
