@@ -50,6 +50,7 @@ Update the `"platforms"` section of your Homebridge `config.json`:
   "platforms": [
     {
       "platform": "AlexaPlayer",
+      "amazonDomain": "amazon.com",
       "auth": {
         "proxy": {
           "clientHost": "192.168.1.234",
