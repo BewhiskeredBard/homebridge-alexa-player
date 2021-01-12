@@ -60,7 +60,7 @@
     "typescript-json-schema": "^0.47.0"
   },
   "dependencies": {
-    "ajv": "^6.12.6",
+    "ajv": "^7.0.0",
     "alexa-remote2": "^3.3.1"
   }
 }

@@ -119,16 +119,19 @@ export class AlexaPlatformPlugin implements IndependentPlatformPlugin {
 
     private validateConfig(schema: Record<string, unknown>, config: PlatformConfig): config is AlexaPlatformConfig {
         const ajv = new Ajv();
-        const isValid = ajv.validate(schema, config) as boolean;
 
-        if (!isValid && ajv.errors && 0 < ajv.errors.length) {
+        if (ajv.validate<AlexaPlatformConfig>(schema, config)) {
+            return true;
+        }
+
+        if (ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
             const message = `Configuration error: config${error.dataPath} ${error.message || ''}`;
 
             throw new Error(message);
         }
 
-        return true;
+        throw new Error('Unknown configuration error');
     }
 
     private getSchema(): Record<string, unknown> {
