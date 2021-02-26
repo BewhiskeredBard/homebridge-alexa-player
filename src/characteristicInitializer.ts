@@ -18,7 +18,7 @@ export interface CharacteristicInitializer {
 export abstract class BaseCharacteristicInitializer implements CharacteristicInitializer {
     public constructor(protected readonly logger: Logging, protected readonly hap: HAP, private readonly alexa: AlexaBridge) {}
 
-    protected setValue(service: Service, value: CharacteristicValue | null): void {
+    protected setValue(service: Service, value: CharacteristicValue): void {
         service.getCharacteristic(this.getCharacteristic()).setValue(value);
     }
 
@@ -186,7 +186,7 @@ export class FirmwareRevisionInitializer extends BaseCharacteristicInitializer {
     }
 
     public initialize(service: Service, device: Device): void {
-        this.setValue(service, device.softwareVersion);
+        this.setValue(service, device.softwareVersion || 'unknown');
     }
 }
 
