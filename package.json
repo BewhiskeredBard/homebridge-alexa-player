@@ -9,7 +9,7 @@
     "config.schema.json"
   ],
   "scripts": {
-    "test": "jest --forceExit",
+    "test": "jest",
     "lint": "eslint . --ext .ts",
     "precompile": "rm -rf lib/*",
     "compile": "tsc",
