@@ -7,6 +7,10 @@ on:
         description: 'A valid semver string, a valid second argument to semver.inc (one of patch, minor, major, prepatch, preminor, premajor, prerelease), or from-git.'
         required: true
         default: 'minor'
+      preid:
+        description: 'A valid semver pre-release id (such as alpha, beta, rc, etc.).'
+        required: false
+        default: ''
 
 jobs:
   bump:
@@ -24,7 +28,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
       - name: Bump version
-        run: npm version ${{github.event.inputs.version}}
+        run: npm version ${{github.event.inputs.version}} --preid=${{github.event.inputs.preid}}
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Push changes and tag
