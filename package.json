@@ -1,6 +1,6 @@
 {
   "name": "homebridge-alexa-player",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A Homebridge plugin that enables basic smart speaker HomeKit integration for Alexa devices (Echo, FireTV, etc.).",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
