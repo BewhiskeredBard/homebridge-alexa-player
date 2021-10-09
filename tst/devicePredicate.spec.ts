@@ -16,15 +16,15 @@ describe(`${DeviceCapabilitiesPredicate.name}`, () => {
             const predicate = new DeviceCapabilitiesPredicate(logger, 'foo');
 
             expect(
-                predicate.test(({
+                predicate.test({
                     capabilities: [],
-                } as unknown) as Device),
+                } as unknown as Device),
             ).toStrictEqual(false);
 
             expect(
-                predicate.test(({
+                predicate.test({
                     capabilities: ['bar'],
-                } as unknown) as Device),
+                } as unknown as Device),
             ).toStrictEqual(false);
         });
 
@@ -32,15 +32,15 @@ describe(`${DeviceCapabilitiesPredicate.name}`, () => {
             const predicate = new DeviceCapabilitiesPredicate(logger, 'foo');
 
             expect(
-                predicate.test(({
+                predicate.test({
                     capabilities: ['foo'],
-                } as unknown) as Device),
+                } as unknown as Device),
             ).toStrictEqual(true);
 
             expect(
-                predicate.test(({
+                predicate.test({
                     capabilities: ['foo', 'bar'],
-                } as unknown) as Device),
+                } as unknown as Device),
             ).toStrictEqual(true);
         });
     });
@@ -60,9 +60,9 @@ describe(`${DeviceFamilyPredicate.name}`, () => {
             const predicate = new DeviceFamilyPredicate(logger, 'foo');
 
             expect(
-                predicate.test(({
+                predicate.test({
                     deviceFamily: 'bar',
-                } as unknown) as Device),
+                } as unknown as Device),
             ).toStrictEqual(false);
         });
 
@@ -70,9 +70,9 @@ describe(`${DeviceFamilyPredicate.name}`, () => {
             const predicate = new DeviceFamilyPredicate(logger, 'foo');
 
             expect(
-                predicate.test(({
+                predicate.test({
                     deviceFamily: 'foo',
-                } as unknown) as Device),
+                } as unknown as Device),
             ).toStrictEqual(true);
         });
     });
