@@ -11,6 +11,8 @@ export type AmazonDomain =
     | 'amazon.it'
     | 'amazon.co.jp'
     | 'amazon.co.uk'
+    | 'amazon.com.au'
+    | 'amazon.com.br'
     | 'amazon.com.mx';
 
 export interface AlexaPlatformConfig extends PlatformConfig {
