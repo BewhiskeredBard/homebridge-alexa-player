@@ -62,3 +62,8 @@ Update the `"platforms"` section of your Homebridge `config.json`:
   ]
 }
 ```
+#### HOOBS Users
+Everytime you're adding this plugin vie HOOBS dashboard, manual configuration must be done. By default  **`"platform"`:** value will be **`"homebridge-alexa-player"`:** instead of the correct one **`"AlexaPlayer"`:** causing plugin to don't work. 
+By changing this you can go via HOOBS dashboard into the so called Advanced section where you can globally change config.json and apply changes there by renaing **`"platform"`:**
+
+
